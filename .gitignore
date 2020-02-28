@@ -1,3 +1,4 @@
+/out/
 /boids/*
 !/boids/boids.pde
 !/boids/class.pde
