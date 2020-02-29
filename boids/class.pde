@@ -16,16 +16,16 @@ class Boid{
 
 
     float sep_k = 1.5;
-    float sep_radius = r*2;
-    float sep_angle = 2*PI;
+    float sep_radius = r*5;
+    float sep_angle = TWO_PI;
 
     float ali_k = 1.0;
     float ali_radius = 50;
-    float ali_angle = 2*PI;
+    float ali_angle = TWO_PI;
 
     float coh_k = 1.0;
     float coh_radius = 50;
-    float coh_angle = 2*PI;
+    float coh_angle = PI;
 
 
     float border_forceToCenter;
@@ -52,7 +52,7 @@ class Boid{
 
         sep.mult(sep_k);
         ali.mult(ali_k);
-        coh.mult(1.0);
+        coh.mult(coh_k);
 
         applyForce(sep);
         applyForce(ali);
@@ -164,19 +164,21 @@ class Boid{
         }else{
             return new PVector(0, 0);
         }
-
-
-        
     }
 
     
     private PVector cohension(ArrayList<Boid> boids){
         PVector sum = new PVector(0, 0);
         int count = 0;
-
+        float include_dot = PVector.dot(new PVector(cos(0), sin(0)), new PVector(cos(coh_angle / 2), sin(coh_angle / 2)));
+        
         for(Boid other: boids){
+            if(id == other.id) continue;
+            PVector loc_diff = PVector.sub(other.location, location);
+            PVector this_v = velocity.copy();
             float d = PVector.dist(location, other.location);
-            if(d > 0 && d< neighbordis){
+            float normalized_dot = PVector.dot(loc_diff.normalize(), this_v.normalize());
+            if(d < coh_radius && normalized_dot > include_dot){
                 sum.add(other.location);
                 count++;
             }
