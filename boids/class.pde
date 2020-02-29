@@ -16,12 +16,16 @@ class Boid{
 
 
     float sep_k = 1.5;
-    float sep_radius = r*3;
+    float sep_radius = r*2;
     float sep_angle = 2*PI;
 
     float ali_k = 1.0;
     float ali_radius = 50;
-    float ali_angle = PI/2;
+    float ali_angle = 2*PI;
+
+    float coh_k = 1.0;
+    float coh_radius = 50;
+    float coh_angle = 2*PI;
 
 
     float border_forceToCenter;
@@ -105,14 +109,15 @@ class Boid{
         float include_dot = PVector.dot(new PVector(cos(0), sin(0)), new PVector(cos(sep_angle / 2), sin(sep_angle / 2)));
 
         for(Boid other: boids){
+            if(id == other.id) continue;
             PVector loc_diff = PVector.sub(other.location, location);
             PVector this_v = velocity.copy();
             float d = PVector.dist(location, other.location);
             float normalized_dot = PVector.dot(loc_diff.normalize(), this_v.normalize());
-            if(d > 0 && d < sep_radius && normalized_dot > include_dot){
+            if(d < sep_radius && normalized_dot > include_dot){
                 PVector diff = PVector.sub(location, other.location);
                 diff.normalize();
-                diff.div(d);
+                diff.div(d / sep_radius);
                 sum.add(diff);
                 count++;
             }
@@ -138,12 +143,13 @@ class Boid{
         float include_dot = PVector.dot(new PVector(cos(0), sin(0)), new PVector(cos(ali_angle / 2), sin(ali_angle / 2)));
 
         for(Boid other: boids){
+            if(id == other.id) continue;
             PVector loc_diff = PVector.sub(other.location, location);
             PVector this_v = velocity.copy();
             float d = PVector.dist(location, other.location);
             float normalized_dot = PVector.dot(loc_diff.normalize(), this_v.normalize());
 
-            if(d > 0 && d < ali_radius && normalized_dot > include_dot){
+            if(d < ali_radius && normalized_dot > include_dot){
                 sum.add(other.velocity);
                 count++;
             }

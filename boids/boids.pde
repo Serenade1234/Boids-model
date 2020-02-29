@@ -1,4 +1,4 @@
-int defaultNum = 1000;
+int defaultNum = 500;
 ArrayList<Boid> g_boids = new ArrayList<Boid>();
 
 void setup(){
