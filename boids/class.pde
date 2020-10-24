@@ -15,8 +15,8 @@ class Boid{
     float sep_stress = 0;
 
 
-    float sep_k = 1.5;
-    float sep_radius = r*5;
+    float sep_k = 1.0;
+    float sep_radius = r*10;
     float sep_angle = TWO_PI;
 
     float ali_k = 1.0;
@@ -25,7 +25,7 @@ class Boid{
 
     float coh_k = 1.0;
     float coh_radius = 50;
-    float coh_angle = PI;
+    float coh_angle = TWO_PI;
 
 
     float border_forceToCenter;
@@ -34,7 +34,8 @@ class Boid{
 
     Boid(float x, float y, int p_id){
         location = new PVector(x, y);
-        velocity = new PVector(random(4)-2, random(4)-2);
+        //velocity = new PVector(random(4)-2, random(4)-2);
+        velocity = new PVector(0,0);
         acceleration = new PVector(0, 0);
         id = p_id;
         maxspeed = 3;
@@ -54,15 +55,16 @@ class Boid{
         ali.mult(ali_k);
         coh.mult(coh_k);
 
-        applyForce(sep);
-        applyForce(ali);
+        //applyForce(sep);
+        //applyForce(ali);
         applyForce(coh); 
 
     }
 
     void update(){
-        check_edge();
-        //edgeToCenter();
+        //check_edge();
+        
+        edgeToCenter();
         velocity.add(acceleration);
         velocity.limit(maxspeed);
         location.add(velocity);

@@ -1,4 +1,4 @@
-int defaultNum = 500;
+int defaultNum = 0;
 ArrayList<Boid> g_boids = new ArrayList<Boid>();
 
 void setup(){
@@ -11,6 +11,8 @@ void setup(){
 
 void draw(){
     background(150);
+    //fill(255,50);
+      //  rect(0, 0, width, height);
     for(Boid b: g_boids){
         b.flock(g_boids);
         b.update();
